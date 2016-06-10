@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+</head>
+<body>
+    <h1>Index-pagina</h1>
+    <p>Hier onder staan de pagina's die gebruikt kunnen worden.</p>
+    <ul>
+        <li>@Html.ActionLink("Klant overzicht", "KlantList").</li>
+        <li>@Html.ActionLink("Klant toevoegen", "KlantCreate"). &emsp; &nbsp;Ook te benaderen via @Html.ActionLink("Klant overzicht", "KlantList").</li>
+        <li>@Html.ActionLink("Klant details", "KlantDetails"). &emsp;&emsp; &emsp;&nbsp;Advies: benaderen via @Html.ActionLink("Klant overzicht", "KlantList"). Extra parameters vereist.</li>
+        <li>@Html.ActionLink("Klant wijzigen", "KlantEdit"). &emsp;&emsp; &emsp;&nbsp;Advies: benaderen via @Html.ActionLink("Klant overzicht", "KlantList"). Extra parameters vereist.</li>
+        <li>@Html.ActionLink("Klant verwijderen", "KlantDelete").&emsp;&nbsp; Advies: benaderen via @Html.ActionLink("Klant overzicht", "KlantList"). Extra parameters vereist.</li>
+        <li>@Html.ActionLink("Order bestellen", "OrderCreate"). &emsp;&emsp;Advies: benaderen via @Html.ActionLink("Klant overzicht", "KlantList") of @Html.ActionLink("Klant details", "KlantDetails").</li>
+    </ul>
+    
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@model il_Topolino.Models.Klant
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>KlantList</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(function () {
+            var host = "http://" + window.location.hostname + ":" + window.location.port + "/"; // actieve host-informatie
+
+            //Hier worden de klantgegevens opgehaald van een specifieke klant, waarbij het ID is opgehaald uit de URL
+            $.ajax({
+                type: "GET",
+                url: host + "api/Klants/" + @ViewBag.klant_id,  //aan te roepen url
+                data: JSON.stringify({}),  // hier lege parameters
+                contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                dataType: "json", //data type te verwachten van server
+                success: function (data) {
+
+                    $('#resultTable').append(
+                        '<tr><td>' + data.straat +
+                        '</td><td>' + data.huisnummer +
+                        '</td><td>' + data.postcode +
+                        '</td><td>' + data.plaats +
+                        '</td><td>' + data.afstand +
+                        '</td><td>' + '<a href="/Home/KlantDelete/' + data.klant_id + '">Delete</a> | ' +
+                        '<a href="/Order/OrderCreate/' + data.klant_id + '">Order</a> | ' +
+                        '<a href="/Home/KlantEdit/' + data.klant_id + '">Wijzig</a>' +
+                        '</td></tr>'
+                    );
+                },
+                error: function (err) {
+                    alert('Er is iets misgegaan bij het ophalen van informatie. Meer informatie volgt in de volgende popup.');
+                    alert(JSON.stringify(err));
+                }
+            });
+        }
+        );
+
+    </script>
+</head>
+<body>
+    <h1>Klant details</h1>
+    Op deze pagina worden de details van een klant weergegeven.<br /><br/>
+    <table name="resultTable" id="resultTable" border="1" bordercolor="LIGHTGREY">
+        <tr>
+            <th>
+                Straat
+            </th>
+            <th>
+                Huisnummer
+            </th>
+            <th>
+                Postcode
+            </th>
+            <th>
+                Plaats
+            </th>
+            <th>
+                Afstand
+            </th>
+            <th>
+                Actie
+            </th>
+        </tr>
+
+    </table>
+    <br />
+    <div>
+        @Html.ActionLink("Nieuwe klant", "KlantCreate")<br />
+        @Html.ActionLink("Terug naar overzicht", "KlantList")
+    </div>
+</body>
+</html>

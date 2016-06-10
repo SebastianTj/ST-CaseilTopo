@@ -1,0 +1,7 @@
+﻿body {
+}
+
+.verkeerdeInput {
+    border: 2px solid red;
+    border-bottom-color: 2px solid red;
+}

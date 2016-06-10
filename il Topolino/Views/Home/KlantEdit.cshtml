@@ -1,0 +1,93 @@
+﻿@model il_Topolino.Models.Klant
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>KlantEdit</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(function () {
+            var host = "http://" + window.location.hostname + ":" + window.location.port + "/"; // actieve host-informatie
+
+            //Hier worden de klantgegevens opgehaald van een specifieke klant, waarbij het ID is opgehaald uit de URL
+            $.ajax({
+                type: "GET",
+                url: host + "api/Klants/" + @ViewBag.klant_id,  //aan te roepen url
+                data: JSON.stringify({}),  // hier lege parameters
+                contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                dataType: "json", //data type te verwachten van server
+                success: function (data) {
+                    $('#inputEditKlantID').val(data.klant_id);
+                    $('#inputEditStraat').val(data.straat);
+                    $('#inputEditHuisnummer').val(data.huisnummer);
+                    $('#inputEditPostcode').val(data.postcode);
+                    $('#inputEditStad').val(data.plaats);
+                    $('#inputEditAfstand').val(data.afstand);
+                },
+                error: function (err) {
+                    alert('Er is iets misgegaan bij het ophalen van informatie. Meer informatie volgt in de volgende popup.');
+                    alert(JSON.stringify(err));
+                }
+            });
+
+            $('#btn_update_klant').click(function(){
+                var klant = {
+                    klant_id: $('#inputEditKlantID').val(),
+                    straat: $("#inputEditStraat").val(),
+                    huisnummer: $("#inputEditHuisnummer").val(),
+                    postcode: $("#inputEditPostcode").val(),
+                    plaats: $("#inputEditStad").val(),
+                    afstand: $("#inputEditAfstand").val()
+                }
+
+                // Hier wordt een Klant-object middels POST toegevoegd aan de database.
+                $.ajax({
+                    type: "PUT",
+                    url: host + "api/Klants/" + @ViewBag.klant_id,  //aan te roepen url
+                    data: JSON.stringify(klant),  // hier lege parameters
+                    contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                    dataType: "json", //data type te verwachten van server
+                    success: function (data) {
+                        alert('Nieuwe gegevens van de klant zijn verwerkt. U wordt doorgestuurd naar de KlantList-pagina.');
+                        window.location.replace(host + 'Home/KlantList'); // Redirect naar KlantList-pagina
+                    },
+                    error: function (err) {
+                        alert('Er is iets mis gegaan bij het opslaan van de nieuwe gegevens van de klant. Meer informatie volgt in de volgende popup.');
+                        alert(JSON.stringify(err));
+                    }
+                });
+            });
+
+
+        }
+        );
+
+    </script>
+</head>
+<body>
+    <h1>Klant details</h1>
+    Op deze pagina worden de details van een klant weergegeven.<br /><br />
+    <form>
+        <input type="text" name="inputEditKlantID" id="inputEditKlantID" value="" readonly/><label for="inputEditKlantID">ID</label> <br />
+        <input type="text" name="inputEditStraat" id="inputEditStraat" value="" placeholder="Voer straat in" /><label for="inputEditStraat">Straat</label><br />
+        <input type="text" name="inputEditHuisnummer" id="inputEditHuisnummer" value="" placeholder="Voer huisnummer in" /><label for="inputEditHuisnummer">Huisnummer</label><br />
+        <input type="text" name="inputEditPostcode" id="inputEditPostcode" value="" placeholder="Voer postcode in" /><label for="inputEditPostcode">Postcode</label><br />
+        <input type="text" name="inputEditStad" id="inputEditStad" value="" placeholder="Voer stad in" /><label for="inputEditStad">Stad</label><br />
+        <input type="text" name="inputEditAfstand" id="inputEditAfstand" value="" placeholder="Voer afstand in" /><label for="inputEditAfstand">Afstand</label><br />
+        <input type="button" name="btn_update_klant" id="btn_update_klant" value="Sla wijzigingen op" />
+
+    </form>
+
+    <br />
+
+    <div>
+        @Html.ActionLink("Terug naar overzicht", "KlantList")
+    </div>
+</body>
+</html>

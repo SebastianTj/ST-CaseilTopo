@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TopolinoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Basismenu">
+    <Key>
+      <PropertyRef Name="menu_id" />
+    </Key>
+    <Property Name="menu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="menu_naam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="prijs" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GekozenToppings">
+    <Key>
+      <PropertyRef Name="orderdetails_id" />
+      <PropertyRef Name="ingredient_id" />
+    </Key>
+    <Property Name="orderdetails_id" Type="Int32" Nullable="false" />
+    <Property Name="ingredient_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Gerecht_categorie">
+    <Key>
+      <PropertyRef Name="categorie_id" />
+    </Key>
+    <Property Name="categorie_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categorie_naam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Gerechten">
+    <Key>
+      <PropertyRef Name="gerecht_id" />
+    </Key>
+    <Property Name="gerecht_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categorie_id" Type="Int32" Nullable="false" />
+    <Property Name="gerecht_naam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Ingredienten">
+    <Key>
+      <PropertyRef Name="ingredient_id" />
+    </Key>
+    <Property Name="ingredient_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="naam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="isTopping" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Klant">
+    <Key>
+      <PropertyRef Name="klant_id" />
+    </Key>
+    <Property Name="klant_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="straat" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="huisnummer" Type="Int32" />
+    <Property Name="postcode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+    <Property Name="plaats" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="afstand" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orderdetails">
+    <Key>
+      <PropertyRef Name="orderdetails_id" />
+    </Key>
+    <Property Name="orderdetails_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="order_id" Type="Int32" />
+    <Property Name="gerecht_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="order_id" />
+    </Key>
+    <Property Name="order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="klant_id" Type="Int32" />
+    <Property Name="status" Type="Int32" />
+    <Property Name="voertuig_id" Type="Int32" />
+    <Property Name="uitgifte" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Orderstatus">
+    <Key>
+      <PropertyRef Name="status_id" />
+    </Key>
+    <Property Name="status_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="status_naam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orderuitgifte">
+    <Key>
+      <PropertyRef Name="uitgifte_id" />
+    </Key>
+    <Property Name="uitgifte_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="soort" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Samenstelling">
+    <Key>
+      <PropertyRef Name="gerecht_id" />
+      <PropertyRef Name="ingredient_id" />
+    </Key>
+    <Property Name="gerecht_id" Type="Int32" Nullable="false" />
+    <Property Name="ingredient_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Voertuig">
+    <Key>
+      <PropertyRef Name="voertuig_id" />
+    </Key>
+    <Property Name="voertuig_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="voertuig1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="TopolinoEntities3" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Basismenu" EntityType="Self.Basismenu" />
+    <EntitySet Name="GekozenToppings" EntityType="Self.GekozenToppings" />
+    <EntitySet Name="Gerecht_categorie" EntityType="Self.Gerecht_categorie" />
+    <EntitySet Name="Gerechten" EntityType="Self.Gerechten" />
+    <EntitySet Name="Ingredienten" EntityType="Self.Ingredienten" />
+    <EntitySet Name="Klant" EntityType="Self.Klant" />
+    <EntitySet Name="Orderdetails" EntityType="Self.Orderdetails" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" />
+    <EntitySet Name="Orderstatus" EntityType="Self.Orderstatus" />
+    <EntitySet Name="Orderuitgifte" EntityType="Self.Orderuitgifte" />
+    <EntitySet Name="Samenstelling" EntityType="Self.Samenstelling" />
+    <EntitySet Name="Voertuig" EntityType="Self.Voertuig" />
+  </EntityContainer>
+</Schema>

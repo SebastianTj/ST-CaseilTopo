@@ -1,0 +1,121 @@
+﻿@model il_Topolino.Models.Klant
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>KlantCreate</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <link href="~/Scripts/Opmaak.css" rel="stylesheet" />
+    <script>
+        $(function () {
+
+            var host = "http://" + window.location.hostname + ":" + window.location.port + "/"; // actieve host-informatie
+
+            // Wanneer geklikt wordt op de knop, wordt deze functie aangeroepen.
+            $('#btn_voeg_klant_toe').click(function () {
+                var klant = {
+                    klant_id: -1,
+                    straat: $("#inputStraat").val(),
+                    huisnummer: $("#inputHuisnummer").val(),
+                    postcode: $("#inputPoscode").val(),
+                    plaats: $("#inputStad").val(),
+                    afstand: $("#inputAfstand").val()
+                }
+
+                // Hier wordt een Klant-object middels POST toegevoegd aan de database.
+                $.ajax({
+                    type: "POST",
+                    url: host + "api/Klants",  //aan te roepen url
+                    data: JSON.stringify(klant),  // hier lege parameters
+                    contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                    dataType: "json", //data type te verwachten van server
+                    success: function (data) {
+                        alert('Nieuwe klant is toegevoegd. U wordt doorgestuurd naar de KlantList-pagina.');
+                        window.location.replace(host + 'Home/KlantList'); // Redirect naar KlantList-pagina
+                    },
+                    error: function (err) {
+                        alert('Er is iets mis gegaan bij het toevoegen van een nieuwe klant. Meer informatie volgt in de volgende popup.');
+                        alert(JSON.stringify(err));
+                    }
+                });
+            });
+        });
+
+        // Controle op postcode
+        function validatePostcode(text) {
+            if (text.value !== "") {
+                if (!(/^\d{4}[A-Za-z]{2}$/.test(text.value))) { // regex: 4 cijfers gevolgd door 2 letters
+                    alert("Helaas. De postcode die u heeft ingevoerd is niet juist. Patroon: 1234AB");
+                    $('#postcodeVeld').addClass('verkeerdeInput'); // CSS class toevoegen aan onjuist invoerveld
+                }
+                else {
+                    $('#postcodeVeld').removeClass('verkeerdeInput'); // CSS class verwijderen van invoerveld
+                }
+            }
+        }
+
+        function validateHuisnummer(text) {
+            if (text.value == "" || !(/^\d{1,4}$/.test(text.value))) { // regex: minimaal en maximaal 4 cijfers
+                $('#huisnummerVeld').addClass('verkeerdeInput'); // CSS class toevoegen aan onjuist invoerveld
+            }
+            else {
+                $('#huisnummerVeld').removeClass('verkeerdeInput'); // CSS class verwijderen van invoerveld
+            }
+        }
+
+        function validateAfstand(text) {
+            if (text.value == "" || !(/^\d{1,4}$/.test(text.value))) { // regex: minimaal en maximaal 4 cijfers
+                $('#afstandVeld').addClass('verkeerdeInput'); // CSS class toevoegen aan onjuist invoerveld
+            }
+            else {
+                $('#afstandVeld').removeClass('verkeerdeInput'); // CSS class verwijderen van invoerveld
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <h1>Klant toevoegen</h1>
+    Op deze pagina kan een nieuwe klant worden toegevoegd.<br /><br />
+    <form action="/" method="post" type="submit" id="form_nieuwe_klant">
+        <p>
+            <input type="text" name="inputStraat" id="inputStraat" placeholder="Voer de straat in"/>
+        </p>
+        <p>
+            <span class="" id="huisnummerVeld">
+                <input type="text" name="inputHuisnummer" id="inputHuisnummer" placeholder="Voer het huisnummer in" onchange="validateHuisnummer(this)" />
+            </span>
+        </p>
+        <p>
+            <span class="" id="postcodeVeld">
+                <input type="text" name="inputPostcode" id="inputPoscode" placeholder="Voer de postcode in" onchange="validatePostcode(this)" />
+            </span>
+        </p>
+        <p>
+            <input type="text" name="inputStad" id="inputStad" placeholder="Voer de stad in" />
+        </p>
+        <p>
+            <span class="" id="afstandVeld">
+                <input type="text" name="inputAfstand" id="inputAfstand" placeholder="Voer de afstand in (km's)" onchange="validateAfstand(this)"/>
+            </span>
+        </p>
+        <p>
+            <input type="button" name="btn_voeg_klant_toe" id="btn_voeg_klant_toe" value="Voeg klant toe" />
+        </p>
+    </form>
+
+    <br /><br />
+    
+        
+    
+    <div>
+        @Html.ActionLink("Terug naar overzicht", "KlantList")
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+﻿@model il_Topolino.Models.Orders
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>OrderCreate</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        var host = "http://" + window.location.hostname + ":" + window.location.port + "/"; // actieve host-informatie
+        var menuArray = []; // array gebruikt voor opslaan van basismenu/gerechten-informatie
+        var ingArray = []; // array gebruikt voor opslaan van ingredienten-informatie
+
+        $(function () {
+            orderregel = 1;
+
+            localStorage.clear(); // maak de localStorage leeg
+            localStorage.setItem("klantID", @ViewBag.klant_id);
+
+            geefOrderregelsWeer();
+
+            var ingredientenObj = [];
+
+            // Hier worden alle basismenu/gerechten opgehaald.
+            $.ajax({
+                type: "GET",
+                url: host + "api/Gerechtens",  //aan te roepen url
+                data: JSON.stringify({}),  // hier lege parameters
+                contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                dataType: "json", //data type te verwachten van server
+                success: function (data) {
+
+                    data.forEach(function(e){
+                        menuArray.push({menuid: e.MenuID, menucategorie: e.Categorie, menugerecht: e.Gerecht});
+                    });
+
+                    $('#inputGerecht').find('option').remove();
+                    $.each(data, function (key, value) {
+                        $('#inputGerecht').append('<option value="' + value.MenuID + '">' + value.Categorie + ' ' + value.Gerecht + '</option>');
+                    });
+                },
+                error: function (err) {
+                    alert('FAIL SELECT DATA');
+                    alert(JSON.stringify(err));
+                }
+            });
+
+            // Hier worden alle ingredienten opgehaald die geschikt zijn als topping.
+            $.ajax({
+                type: "GET",
+                url: host + "api/Ingredientens",  //aan te roepen url
+                data: JSON.stringify({}),  // hier lege parameters
+                contentType: "application/json; charset=utf-8", // het contenttype van de data die naar de server wordt gestuurd
+                dataType: "json", //data type te verwachten van server
+                success: function (data) {
+                    ingredientenObj = JSON.stringify(data);
+
+                    data.forEach(function(e){
+                        ingArray.push({ingredientid: e.ingredient_id, ingredientnaam: e.naam, topping: e.isTopping});
+                    });
+
+                    $.each(data, function (key, value) {
+                        $('#toppingSet').append('<input type="checkbox" name="inputTopping" id="inputTopping" value="' + value.ingredient_id + '" /> ' + value.naam + ' <br />');
+                    });
+                },
+                error: function (err) {
+                    alert('FAIL CHECKBOX DATA');
+                    alert(JSON.stringify(err));
+                }
+            });
+
+            // Hier wordt een basismenu/gerecht en toppings toegevoegd aan een orderregel. Deze orderregel wordt opgeslagen in de localStorage.
+            $('#btn_voeg_toe').click(function () {
+                // Ophalen van selected option
+                var selectedMenu = $('#inputGerecht').find(':selected').val();
+
+                // Ophalen van alle checked checkboxes
+                var val = [];
+                $('#inputTopping:checked').each(function (i) {
+                    val[i] = $(this).val();
+                });
+
+                // object met gekozen menu en alle toppings (toppings in array)
+                var orderObject = {menu: selectedMenu, toppings: val};
+
+                // object wordt aan localStorage toegevoegd per orderregel
+                localStorage['orderregel' + orderregel] = JSON.stringify(orderObject);
+
+                $('#inputTopping:checked').each(function(element){ // uncheck alle topping-checkboxes
+                    $(this).prop("checked", false);
+                });
+
+                orderregel++; // static var wordt verhoogd met 1 (nieuwe orderregel)
+                geefOrderregelsWeer();
+            });
+
+            $('#btn_bevestig').click(function () {
+                alert('Geklikt op button Bevestig');
+            });
+
+            $('#btn_erase').click(function() {
+                localStorage.clear();
+                localStorage.setItem("klantID", @ViewBag.klant_id);
+                orderregel = 1;
+
+                $('#inputTopping:checked').each(function(element){ // uncheck alle topping-checkboxes
+                    $(this).prop("checked", false);
+                });
+
+                geefOrderregelsWeer();
+
+            });
+
+            // Door het aanroepen van deze functie, worden alle beschikbare orderregels in localStorage weergegeven.
+            function geefOrderregelsWeer(){
+                var $orderregelSpan = $('#orderregels');
+                $orderregelSpan.empty(); // Verwijder bestaande orderregel-informatie
+
+                $orderregelSpan.append('Klant id: ' + localStorage['klantID'] + ' <br />'); // Laat huidige klant-id zien
+                if(localStorage.length != 1){
+                    for(var regel = 1; regel <= (localStorage.length-1); regel++) // For-loop om door meerdere orderregels heen te lopen
+                    {
+                        var tempObj = JSON.parse(localStorage['orderregel' + regel]);
+
+                        // Gerechtnaam weergeven
+                        $orderregelSpan.append('----------------------------------<br />Orderregel: ' + regel + '<br />' +
+                            'Menu: ' + haalGerechtNaam(tempObj['menu']) + '<br />' +    // hier wordt een functie aangeroepen om de naam van het gerecht op te halen
+                            '<ul>'
+                            );
+
+                        var arrayToppings = tempObj['toppings'];
+
+                        // Toppings toevoegen
+                        $.each(arrayToppings, function(key, value){
+                            $orderregelSpan.append('<li>' + haalIngredientNaam(value) + '</li>');   // hier wordt een functie aangeroepen om de naam van de topping op te halen
+                        });
+
+                        $orderregelSpan.append('</ul><br />');
+                    }
+                }
+            }
+        });
+
+        // Geeft de naam van het basismenu/gerecht terug
+        function haalGerechtNaam(id){
+            var result;
+            menuArray.forEach(function(element){
+                if(element.menuid == parseInt(id)){
+                    result = element.menucategorie + ' ' + element.menugerecht;
+                }
+            });
+            return result;
+        }
+
+        // Geeft de naam van de topping terug
+        function haalIngredientNaam(id){
+            var result;
+            ingArray.forEach(function(element){
+                if(element.ingredientid == parseInt(id)){
+                    result = element.ingredientnaam;
+                }
+            });
+            return result;
+        }
+
+
+
+
+    </script>
+</head>
+<body>
+    <h1>Order Create</h1>
+
+    <div id="gerechten">
+        <p>
+            Kies hier het gewenste basismenu.<br />
+            <select name="inputGerecht" id="inputGerecht"></select>
+        </p>
+    </div>
+
+    <div id="toppings">
+        <p>
+            Kies de gewenste topping. Meerdere toppings zijn mogelijk.<br />
+            <span id="toppingSet"></span>
+    </div>
+
+    <div id="knoppen">
+        <p>
+            <input type="button" name="btn_voeg_toe" id="btn_voeg_toe" value="Voeg orderregel toe" />
+            <input type="button" name="btn_bevestig" id="btn_bevestig" value="Plaats bestelling" />
+            <input type="button" name="btn_erase" id="btn_erase" value="Wis totale bestelling" />
+        </p>
+    </div>
+
+    <div id="huidige_bestelling">
+        <p>
+            Onderstaande gerechten staan in uw winkelwagen.<br />
+            <span id="orderregels"></span>
+        </p>
+    </div>
+
+
+
+</body>
+</html>

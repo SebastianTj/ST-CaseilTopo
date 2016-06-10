@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TopolinoModelStoreContainer" CdmEntityContainer="TopolinoEntities3">
+    <EntitySetMapping Name="Basismenu">
+      <EntityTypeMapping TypeName="TopolinoModel.Basismenu">
+        <MappingFragment StoreEntitySet="Basismenu">
+          <ScalarProperty Name="menu_id" ColumnName="menu_id" />
+          <ScalarProperty Name="menu_naam" ColumnName="menu_naam" />
+          <ScalarProperty Name="prijs" ColumnName="prijs" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GekozenToppings">
+      <EntityTypeMapping TypeName="TopolinoModel.GekozenToppings">
+        <MappingFragment StoreEntitySet="GekozenToppings">
+          <ScalarProperty Name="orderdetails_id" ColumnName="orderdetails_id" />
+          <ScalarProperty Name="ingredient_id" ColumnName="ingredient_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Gerecht_categorie">
+      <EntityTypeMapping TypeName="TopolinoModel.Gerecht_categorie">
+        <MappingFragment StoreEntitySet="Gerecht_categorie">
+          <ScalarProperty Name="categorie_id" ColumnName="categorie_id" />
+          <ScalarProperty Name="categorie_naam" ColumnName="categorie_naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Gerechten">
+      <EntityTypeMapping TypeName="TopolinoModel.Gerechten">
+        <MappingFragment StoreEntitySet="Gerechten">
+          <ScalarProperty Name="gerecht_id" ColumnName="gerecht_id" />
+          <ScalarProperty Name="categorie_id" ColumnName="categorie_id" />
+          <ScalarProperty Name="gerecht_naam" ColumnName="gerecht_naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ingredienten">
+      <EntityTypeMapping TypeName="TopolinoModel.Ingredienten">
+        <MappingFragment StoreEntitySet="Ingredienten">
+          <ScalarProperty Name="ingredient_id" ColumnName="ingredient_id" />
+          <ScalarProperty Name="naam" ColumnName="naam" />
+          <ScalarProperty Name="isTopping" ColumnName="isTopping" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Klant">
+      <EntityTypeMapping TypeName="TopolinoModel.Klant">
+        <MappingFragment StoreEntitySet="Klant">
+          <ScalarProperty Name="klant_id" ColumnName="klant_id" />
+          <ScalarProperty Name="straat" ColumnName="straat" />
+          <ScalarProperty Name="huisnummer" ColumnName="huisnummer" />
+          <ScalarProperty Name="postcode" ColumnName="postcode" />
+          <ScalarProperty Name="plaats" ColumnName="plaats" />
+          <ScalarProperty Name="afstand" ColumnName="afstand" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orderdetails">
+      <EntityTypeMapping TypeName="TopolinoModel.Orderdetails">
+        <MappingFragment StoreEntitySet="Orderdetails">
+          <ScalarProperty Name="orderdetails_id" ColumnName="orderdetails_id" />
+          <ScalarProperty Name="order_id" ColumnName="order_id" />
+          <ScalarProperty Name="gerecht_id" ColumnName="gerecht_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="TopolinoModel.Orders">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="order_id" ColumnName="order_id" />
+          <ScalarProperty Name="klant_id" ColumnName="klant_id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="voertuig_id" ColumnName="voertuig_id" />
+          <ScalarProperty Name="uitgifte" ColumnName="uitgifte" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orderstatus">
+      <EntityTypeMapping TypeName="TopolinoModel.Orderstatus">
+        <MappingFragment StoreEntitySet="Orderstatus">
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="status_naam" ColumnName="status_naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orderuitgifte">
+      <EntityTypeMapping TypeName="TopolinoModel.Orderuitgifte">
+        <MappingFragment StoreEntitySet="Orderuitgifte">
+          <ScalarProperty Name="uitgifte_id" ColumnName="uitgifte_id" />
+          <ScalarProperty Name="soort" ColumnName="soort" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Samenstelling">
+      <EntityTypeMapping TypeName="TopolinoModel.Samenstelling">
+        <MappingFragment StoreEntitySet="Samenstelling">
+          <ScalarProperty Name="gerecht_id" ColumnName="gerecht_id" />
+          <ScalarProperty Name="ingredient_id" ColumnName="ingredient_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Voertuig">
+      <EntityTypeMapping TypeName="TopolinoModel.Voertuig">
+        <MappingFragment StoreEntitySet="Voertuig">
+          <ScalarProperty Name="voertuig_id" ColumnName="voertuig_id" />
+          <ScalarProperty Name="voertuig1" ColumnName="voertuig" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
